@@ -21,10 +21,8 @@ app.get('/whispers', (req,res) => {
         })
         .catch(err => console.error(err));
 })
-exports.createWhisper = functions.https.onRequest((req, res) => {
-    if (req.method !== 'POST'){
-        return res.status(400).json({error: "Method not allowed"})
-    }
+
+app.post('/whisper', (req, res) => {
     const newWhisper = {
         body: req.body.body,
         userHandle: req.body.userHandle,
@@ -42,6 +40,6 @@ exports.createWhisper = functions.https.onRequest((req, res) => {
             res.status(500).json({error: 'something went wrong'})
             console.error(err);
         });
-});
+})
 
 exports.api = functions.https.onRequest(app);
