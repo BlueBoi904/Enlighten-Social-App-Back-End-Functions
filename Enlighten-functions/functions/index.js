@@ -25,6 +25,9 @@ exports.getWhispers = functions.https.onRequest((req, res) => {
 });
 
 exports.createWhisper = functions.https.onRequest((req, res) => {
+    if (req.method !== 'POST'){
+        return res.status(400).json({error: "Method not allowed"})
+    }
     const newWhisper = {
         body: req.body.body,
         userHandle: req.body.userHandle,
@@ -36,7 +39,7 @@ exports.createWhisper = functions.https.onRequest((req, res) => {
         .collection('whispers')
         .add(newWhisper)
         .then((doc) => {
-            res.json({message: `document ${doc.id} created successfully`}) 
+            res.json({ message: `document ${doc.id} created successfully`}) 
         })
         .catch(err => {
             res.status(500).json({error: 'something went wrong'})
