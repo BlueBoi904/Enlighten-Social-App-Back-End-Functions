@@ -2,14 +2,12 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 admin.initializeApp();
-// // Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send("Hello world");
-});
 
-exports.getWhispers = functions.https.onRequest((req, res) => {
+const express = require('express');
+const app = express();
+
+
+app.get('/whispers', (req,res) => {
     admin
         .firestore()
         .collection('whispers')
@@ -22,8 +20,7 @@ exports.getWhispers = functions.https.onRequest((req, res) => {
             return res.json(whispers);
         })
         .catch(err => console.error(err));
-});
-
+})
 exports.createWhisper = functions.https.onRequest((req, res) => {
     if (req.method !== 'POST'){
         return res.status(400).json({error: "Method not allowed"})
@@ -46,3 +43,5 @@ exports.createWhisper = functions.https.onRequest((req, res) => {
             console.error(err);
         });
 });
+
+exports.api = functions.https.onRequest(app);
