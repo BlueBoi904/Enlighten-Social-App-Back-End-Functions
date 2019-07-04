@@ -5,7 +5,7 @@ const app = require('express')();
 const FBAuth = require('./util/fbauth');
 
 const { getAllWhispers, postOneWhisper } = require('./handlers/whispers');
-const { signup, login, uploadImage} = require('./handlers/users');
+const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser} = require('./handlers/users');
 
 
 // Whisper ROUTES 
@@ -14,7 +14,9 @@ app.post('/whisper', FBAuth, postOneWhisper);
 
 // USER ROUTES
 app.post('/signup', signup);
-app.post('/login', login)
-app.post('/user/image', FBAuth, uploadImage)
+app.post('/login', login);
+app.post('/user/image', FBAuth, uploadImage);
+app.post('/user' , FBAuth, addUserDetails);
+app.get('/user', FBAuth, getAuthenticatedUser);
 
 exports.api = functions.https.onRequest(app);
