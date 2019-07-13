@@ -48,3 +48,28 @@ exports.postOneWhisper = (req, res) => {
             console.error(err);
         });
 }
+
+// Grabing a whisper and its comments
+exports.getWhisper = (req,res) => {
+    let whisperData = {};
+    db.doc(`/whispers/${req.params.whisperId}`).get()
+        .then(doc => {
+            if (!doc.exists){
+                return res.status(404).json({error: 'Whisper not found'})
+            } 
+            whisperData = doc.data();
+            whisperData.screamId = doc.id;
+            return db.collection('comments').where('whisperId','==', req.params.whisperId).get();
+        })
+        .then(data => {
+            whisperData.comments = [];
+            data.forEach(doc => {
+                whisperData.push(doc.data())
+            });
+            return res.json(whisperData);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({error: err.code});
+        });
+}
