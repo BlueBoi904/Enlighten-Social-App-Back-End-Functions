@@ -50,6 +50,7 @@ exports.postOneWhisper = (req, res) => {
 }
 
 // Grabing a whisper and its comments
+//
 exports.getWhisper = (req,res) => {
     let whisperData = {};
     db.doc(`/whispers/${req.params.whisperId}`).get()
@@ -59,12 +60,16 @@ exports.getWhisper = (req,res) => {
             } 
             whisperData = doc.data();
             whisperData.screamId = doc.id;
-            return db.collection('comments').where('whisperId','==', req.params.whisperId).get();
+            return db
+            .collection('comments')
+            .orderBy('createdAt','desc')
+            .where('whisperid','==', req.params.whisperId)
+            .get();
         })
         .then(data => {
             whisperData.comments = [];
             data.forEach(doc => {
-                whisperData.push(doc.data())
+                whisperData.comments.push(doc.data())
             });
             return res.json(whisperData);
         })
@@ -72,4 +77,33 @@ exports.getWhisper = (req,res) => {
             console.error(err);
             res.status(500).json({error: err.code});
         });
+}
+// Comment on a comment
+exports.commentOnWhisper = (req, res) => {
+    if (req.body.body.trim() === '') return res.status(400).json({ error: 'Must no be empty'});
+
+    const newComment = {
+        body: req.body.body,
+        createdAt: new Date().toISOString(),
+        whisperid: req.params.whisperId,
+        userHandle: req.user.handle,
+        userImage: req.user.imageUrl
+    };
+
+    db.doc(`/whispers/${req.params.whisperId}`).get()
+        .then(doc => {
+            if (!doc.exists){
+                return res.status(404).json({error: 'Whisper not found'});
+            }
+
+            return db.collection('comments').add(newComment);
+        })
+        .then(()=> {
+            res.json(newComment);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: 'Something went wrong'});
+        })
+
 }

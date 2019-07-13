@@ -5,7 +5,11 @@ const app = require('express')();
 
 const FBAuth = require('./util/fbauth');
 
-const { getAllWhispers, postOneWhisper, getWhisper } = require('./handlers/whispers');
+const { getAllWhispers,
+        postOneWhisper,
+        getWhisper,
+        commentOnWhisper 
+        } = require('./handlers/whispers');
 const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser} = require('./handlers/users');
 
 
@@ -16,7 +20,7 @@ app.get('/whisper/:whisperId', getWhisper);
 //TODO: delete whisper
 //TODO: Like a whisper
 // TODO: Unlike a whisper
-// TODO: comment on whisper
+app.post('/whisper/:whisperId/comment', FBAuth, commentOnWhisper);
 
 // USER ROUTES
 app.post('/signup', signup);
