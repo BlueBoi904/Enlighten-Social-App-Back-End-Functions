@@ -8,7 +8,10 @@ const FBAuth = require('./util/fbauth');
 const { getAllWhispers,
         postOneWhisper,
         getWhisper,
-        commentOnWhisper 
+        commentOnWhisper ,
+        likeWhisper,
+        unlikeWhisper,
+        deleteWhisper
         } = require('./handlers/whispers');
 const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser} = require('./handlers/users');
 
@@ -17,9 +20,9 @@ const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser} = requ
 app.get('/whispers', getAllWhispers)
 app.post('/whisper', FBAuth, postOneWhisper);
 app.get('/whisper/:whisperId', getWhisper);
-//TODO: delete whisper
-//TODO: Like a whisper
-// TODO: Unlike a whisper
+app.delete('/whisper/:whisperId', FBAuth, deleteWhisper);
+app.get('/whisper/:whisperId/like', FBAuth, likeWhisper);
+app.get('/whisper/:whisperId/unlike', FBAuth, unlikeWhisper);
 app.post('/whisper/:whisperId/comment', FBAuth, commentOnWhisper);
 
 // USER ROUTES
