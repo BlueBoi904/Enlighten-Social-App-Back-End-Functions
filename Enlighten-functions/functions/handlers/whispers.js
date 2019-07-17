@@ -12,7 +12,10 @@ exports.getAllWhispers = (req, res) => {
                     whisperId: doc.id,
                     body: doc.data().body,
                     userHandle: doc.data().userHandle,
-                    createdAt: doc.data.createdAt
+                    createdAt: doc.data.createdAt,
+                    commentCount: doc.data().commentCount,
+                    likeCount: doc.data().likeCount,
+                    userImage: doc.data().userImage
                 });
             });
             return res.json(whispers);
