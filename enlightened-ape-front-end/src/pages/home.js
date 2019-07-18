@@ -1,22 +1,12 @@
 import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import Whisper from '../components/Whisper'
 class home extends Component {
     state = {
         whispers: null
     }
-    /*
-    axios.get('https://a.4cdn.org/a/threads.json', {
-	headers: {
-	  'Access-Control-Allow-Origin': '*',
-	},
-	proxy: {
-	  host: '104.236.174.88',
-	  port: 3128
-    }
-    */
 
-    
     componentDidMount(){
         axios.get('/whispers')
           .then(res => {
@@ -32,7 +22,7 @@ class home extends Component {
         const {whispers} = this.state;
 
         let recentWhispersMarkup = whispers ? (
-            whispers.map(whisper => <p> {whisper.body}</p>)
+            whispers.map(whisper => <Whisper key={whisper.whisperId} whisper={whisper} />)
         ) : <p>Loading...</p>
         return (
             <Grid container spacing={10}>
