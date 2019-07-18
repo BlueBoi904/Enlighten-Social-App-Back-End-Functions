@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import Whisper from '../components/Whisper'
+
 class home extends Component {
     state = {
         whispers: null
