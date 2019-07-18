@@ -12,7 +12,7 @@ import login from './pages/login';
 import signup from './pages/signup';
 
 // Create Material UI theme
-const theme =createMuiTheme({
+const theme = createMuiTheme({
   palette: {
     primary: {
       light: '#33c9dc',
@@ -26,6 +26,9 @@ const theme =createMuiTheme({
       dark: '#b22a00',
       contrastText: '#fff'
     }
+  },
+  typography: {
+    userNextVariants: true
   }
 })
 
