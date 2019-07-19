@@ -1,32 +1,36 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import jwtDecode from 'jwt-decode';
+import React from "react";
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import jwtDecode from "jwt-decode";
+// Redux
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
 //Components
-import Navbar from './components/NavBar';
-import AuthRoute from './util/AuthRoute'
+import Navbar from "./components/NavBar";
+import AuthRoute from "./util/AuthRoute";
 
 // Pages
-import home from './pages/home';
-import login from './pages/login';
-import signup from './pages/signup';
+import home from "./pages/home";
+import login from "./pages/login";
+import signup from "./pages/signup";
 
 // Create Material UI theme
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#33c9dc',
-      main: '#00bcd4',
-      dark: '#b22a00',
-      contrastText: '#fff'
+      light: "#33c9dc",
+      main: "#00bcd4",
+      dark: "#b22a00",
+      contrastText: "#fff"
     },
     secondary: {
-      light: '#ff6333',
-      main: '#ff3d00',
-      dark: '#b22a00',
-      contrastText: '#fff'
+      light: "#ff6333",
+      main: "#ff3d00",
+      dark: "#b22a00",
+      contrastText: "#fff"
     }
   },
   typography: {
@@ -35,10 +39,10 @@ const theme = createMuiTheme({
 });
 let authenticated;
 const token = localStorage.FBIdToken;
-if (token){
+if (token) {
   const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1000 < Date.now()){
-    window.location.href = '/login';
+  if (decodedToken.exp * 1000 < Date.now()) {
+    window.location.href = "/login";
     authenticated = false;
   } else {
     authenticated = true;
@@ -48,19 +52,28 @@ if (token){
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="App">
-      <Router>
-      <Navbar />
-      <div className='container'>
-      
-      <Switch>
-        <Route exact path ='/' component={home}/>
-        <AuthRoute exact path ='/login' component={login}  authenticated = {authenticated}/>
-        <AuthRoute exact path ='/signup' component={signup} authenticated = {authenticated}/>
-      </Switch>
-      </div>
-      </Router>
-    </div>
+      <Provider store={store}>
+        <Router>
+          <Navbar />
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={home} />
+              <AuthRoute
+                exact
+                path="/login"
+                component={login}
+                authenticated={authenticated}
+              />
+              <AuthRoute
+                exact
+                path="/signup"
+                component={signup}
+                authenticated={authenticated}
+              />
+            </Switch>
+          </div>
+        </Router>
+      </Provider>
     </MuiThemeProvider>
   );
 }
