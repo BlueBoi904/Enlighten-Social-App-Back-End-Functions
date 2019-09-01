@@ -16,7 +16,3 @@ Enlighten is a full fledged social media app where users can make a profile, cre
 - Managed and stored data using a NoSQL Database.
 - Improved User Validation and Security by developing our own middleware and password encryption.
 - Increased backend functionality implementing database triggers.
-
-# Test App Live
-
-Link to test the app live: https://enlightened-d7a2f.firebaseapp.com/
